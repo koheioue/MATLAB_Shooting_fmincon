@@ -25,8 +25,8 @@ figure(1)
 axis equal
 % 太陽をプロットする（大きさは、半径R_sunを使用）（2次元平面で）
 theta = linspace(0, 2*pi, 20);
-x_sun = auxdata.R_sun_km * cos(theta);
-y_sun = auxdata.R_sun_km * sin(theta);
+x_sun = auxdata.R_sun * cos(theta);
+y_sun = auxdata.R_sun * sin(theta);
 fill(x_sun, y_sun, 'r', 'FaceAlpha', 0.5, 'EdgeColor', 'k', 'LineWidth', 2)
 hold on
 plot(x_all_plot(:,1), x_all_plot(:,2), Color=[1,0,0], LineWidth=2)% 軌道を赤線で描画
