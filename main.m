@@ -5,17 +5,32 @@ flag_opt = 0;% 1:最適化後, 0:最適化前
 
 %% multiple shooting の条件
 coeff_obj = 1e3;% 目的関数の係数
-coeff_u  = 1e4;
-lsf = 1e4;
-tsf = 1e4;
+coeff_u  = 1;
+lsf = 1e6;
+tsf = 1e6;
+msf = 1;
+
 %% 初期値の設定
-y_node_int_all = [0, -1.496e8, 0, 29.78, 0, 0; 1.496e8, 0, 0, 0, 29.78, 0; 0, 1.496e8, 0, -29.78, 0, 0];
-u_node_int_all = coeff_u *[0, 0, 0, 0; 0, 0, 0, 3.154e+7/4; 0, 0, 0, 3.154e+7/4];
+y_node_int_all = [0, -1.496e8, 0, 29.78, 0, 0; 
+                  1.496e8, 0, 0, 0, 29.78, 0; 
+                  0, 1.496e8, 0, -29.78, 0, 0];
+
+u_node_int_all = coeff_u * [0, 0, 0, 0; 
+                            0, 0, 0, 3.154e+7/4; 
+                            0, 0, 0, 3.154e+7/4];
+
+%% スケーリングファクターを適用
+y_node_int_all(:, 1:3) = y_node_int_all(:, 1:3) / lsf; % x, y, z のスケーリング
+y_node_int_all(:, 4:6) = y_node_int_all(:, 4:6) * tsf / lsf; % vx, vy, vz のスケーリング
+u_node_int_all(:, 1:3) = u_node_int_all(:, 1:3) * tsf / lsf; % vx, vy, vz のスケーリング
+u_node_int_all(:, 4) = u_node_int_all(:, 4) /tsf; % T のスケーリング
 
 N = length(u_node_int_all(:,1));
 u_node_int_all(:, 4) = u_node_int_all(:, 4) * 1.015;
 auxdata_set
-auxdata.x_target = [0, 227936640, 0, -24.07,0,0];% 目標点の設定
+auxdata.x_target = [0, 227936640, 0, -24.07, 0, 0]; % 目標点の設定
+auxdata.x_target(1:3) = auxdata.x_target(1:3) / lsf; % x, y, z のスケーリング
+auxdata.x_target(4:6) = auxdata.x_target(4:6) * tsf / lsf; % vx, vy, vz のスケーリング
 auxdata.coeff_u = coeff_u;
 
 %% 最適化に使う用にreshape
@@ -27,6 +42,9 @@ plot_traj_from_y
 %% 最適化
 yL = -[Inf*ones(length(x_node_int_vector),1); Inf*ones(length(u_node_int_vector),1)];
 yU =  [Inf*ones(length(x_node_int_vector),1); Inf*ones(length(u_node_int_vector),1)];
+
+%% 初期軌道の図を消す
+close all
 
 %% ちゃんと制約条件が適切か確認
 confun(y0, auxdata);
@@ -42,7 +60,7 @@ options = optimoptions('fmincon', ...
     'OptimalityTolerance', 1e-4, ...
     'ConstraintTolerance', 1e-12, ...
     'MaxFunctionEvaluations', 5e5, ...
-    'MaxIterations', 20);
+    'MaxIterations', 100);
 
 % 最適化の実行
 [yopt, f, output] = fmincon(@(y) objfun(y, auxdata), y0, [], [], [], [], yL, yU, @(y) confun(y, auxdata), options);
