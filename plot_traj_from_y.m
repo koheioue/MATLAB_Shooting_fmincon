@@ -11,7 +11,7 @@ x_node     = reshape(y_plot(1:6*(N)),6,N)';% (N)×6の行列
 u_node     = reshape(y_plot(6*(N)+1:6*(N)+4*N),4,N)';% N×4の行列
 x_node_real(:, 1:3) = x_node(:, 1:3) * lsf; % x, y, z のスケーリングを元に戻す
 x_node_real(:, 4:6) = x_node(:, 4:6) * lsf / tsf; % vx, vy, vz のスケーリングを元に戻す
-% u_node(:, 1:3) = u_node(:, 1:3) * lsf / tsf; % vx, vy, vz のスケーリングを元に戻す
+u_node_real(:, 1:3) = u_node(:, 1:3) * lsf / tsf; % vx, vy, vz のスケーリングを元に戻す
 
 T_sum = [cumsum(u_node(1:N, 4))];% 0, T1, T1+T2, ...のベクトル
 x_node_end = [];
@@ -67,7 +67,7 @@ xlabel('x ,km')
 ylabel('y ,km')
 
 %% ΔVの合計  km/s
-delta_v = u_node(:, 1:3);
+delta_v = u_node_real(:, 1:3);
 delta_v_sum_km_s = sum(vecnorm(delta_v, 2, 2)); 
 disp(['Delta V sum = ', num2str(delta_v_sum_km_s), ' km/s'])
 
@@ -76,3 +76,29 @@ if flag_opt == 0
 elseif flag_opt == 1
     title(['Optimized Trajectory (ΔV = ', num2str(delta_v_sum_km_s), ' km/s)'])
 end
+
+%% ホーマン遷移軌道のΔVを解析的に計算
+% ホーマン遷移軌道の半長径
+a_transfer = (auxdata.R_sun_earth + auxdata.R_sun_mars) / 2;
+v_earth_orbit = sqrt(auxdata.mu_sun / auxdata.R_sun_earth);
+v_mars_orbit = sqrt(auxdata.mu_sun / auxdata.R_sun_mars);
+
+% ホーマン遷移軌道上の速度（地球出発時）
+v_transfer_earth = sqrt(auxdata.mu_sun * (2/auxdata.R_sun_earth - 1/a_transfer));
+
+% ホーマン遷移軌道上の速度（火星到着時）
+v_transfer_mars = sqrt(auxdata.mu_sun * (2/auxdata.R_sun_mars - 1/a_transfer));
+
+% 出発ΔV
+delta_v_departure = v_transfer_earth - v_earth_orbit;
+
+% 到着ΔV
+delta_v_arrival = v_mars_orbit - v_transfer_mars;
+
+% ΔVの合計
+delta_v_total = delta_v_departure + delta_v_arrival;
+
+% 結果を表示
+disp(['解析解: 地球出発時の ΔV = ', num2str(delta_v_departure * lsf / tsf), ' km/s'])
+disp(['解析解: 火星到着時の ΔV = ', num2str(delta_v_arrival * lsf / tsf), ' km/s'])
+disp(['解析解: ホーマン遷移軌道の ΔV = ', num2str(delta_v_total * lsf / tsf), ' km/s'])
