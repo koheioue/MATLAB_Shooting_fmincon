@@ -20,17 +20,17 @@ ceq_node = [ceq_node;x(end,1:3)-auxdata.x_target(1:3), x(end,4:6)+u_node(N, 1:3)
 ceq = reshape(ceq_node', [], 1);% 等式制約
 c = [];% 不等式制約は今回無し
 
-figure(1)
-% close
-axis equal
-% 太陽をプロットする（大きさは、半径R_sunを使用）（2次元平面で）
-theta = linspace(0, 2*pi, 20);
-x_sun = auxdata.R_sun * cos(theta);
-y_sun = auxdata.R_sun * sin(theta);
-fill(x_sun, y_sun, 'r', 'FaceAlpha', 0.5, 'EdgeColor', 'k', 'LineWidth', 2)
-hold on
-plot(x_all_plot(:,1), x_all_plot(:,2), Color=[1,0,0], LineWidth=2)% 軌道を赤線で描画
-hold on
-plot(x_node_int(:,1), x_node_int(:,2), 'b*', MarkerSize=10)
+% figure(1)
+% % close
+% axis equal
+% % 太陽をプロットする（大きさは、半径R_sunを使用）（2次元平面で）
+% theta = linspace(0, 2*pi, 20);
+% x_sun = auxdata.R_sun * cos(theta);
+% y_sun = auxdata.R_sun * sin(theta);
+% fill(x_sun, y_sun, 'r', 'FaceAlpha', 0.5, 'EdgeColor', 'k', 'LineWidth', 2)
+% hold on
+% plot(x_all_plot(:,1), x_all_plot(:,2), Color=[1,0,0], LineWidth=2)% 軌道を赤線で描画
+% hold on
+% plot(x_node_int(:,1), x_node_int(:,2), 'b*', MarkerSize=10)
 
 end
