@@ -6,7 +6,7 @@ flag_opt = 0;% 1:最適化後, 0:最適化前
 %% multiple shooting の条件
 coeff_obj = 1e3;% 目的関数の係数
 lsf = 1e6;
-tsf = 1e6;co
+tsf = 1e6;
 msf = 1;
 
 %% 初期値の設定
