@@ -3,7 +3,7 @@ function [c, ceq] = confun(y, auxdata)
 N = auxdata.N;
 options = auxdata.options;
 x_node_int = reshape(y(1:6*(N)),6,N)';% (N)×6の行列
-u_node     = reshape(y(6*(N)+1:6*(N)+4*N),4,N)'/auxdata.coeff_u;% N×4の行列
+u_node     = reshape(y(6*(N)+1:6*(N)+4*N),4,N)';% N×4の行列
 T_sum = [cumsum(u_node(1:N, 4))];% 0, T1, T1+T2, ...のベクトル
 
 ceq_node = [auxdata.y_node_int_all(1,1:6)-x_node_int(1,:)];

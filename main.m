@@ -5,9 +5,8 @@ flag_opt = 0;% 1:最適化後, 0:最適化前
 
 %% multiple shooting の条件
 coeff_obj = 1e3;% 目的関数の係数
-coeff_u  = 1;
 lsf = 1e6;
-tsf = 1e6;
+tsf = 1e6;co
 msf = 1;
 
 %% 初期値の設定
@@ -15,9 +14,9 @@ y_node_int_all = [0, -1.496e8, 0, 29.78, 0, 0;
                   1.496e8, 0, 0, 0, 29.78, 0; 
                   0, 1.496e8, 0, -29.78, 0, 0];
 
-u_node_int_all = coeff_u * [0, 0, 0, 0; 
-                            0, 0, 0, 3.154e+7/4; 
-                            0, 0, 0, 3.154e+7/4];
+u_node_int_all = [0, 0, 0, 0; 
+                  0, 0, 0, 3.154e+7/4; 
+                  0, 0, 0, 3.154e+7/4];
 
 %% スケーリングファクターを適用
 y_node_int_all(:, 1:3) = y_node_int_all(:, 1:3) / lsf; % x, y, z のスケーリング
@@ -31,7 +30,6 @@ auxdata_set
 auxdata.x_target = [0, 227936640, 0, -24.07, 0, 0]; % 目標点の設定
 auxdata.x_target(1:3) = auxdata.x_target(1:3) / lsf; % x, y, z のスケーリング
 auxdata.x_target(4:6) = auxdata.x_target(4:6) * tsf / lsf; % vx, vy, vz のスケーリング
-auxdata.coeff_u = coeff_u;
 
 %% 最適化に使う用にreshape
 x_node_int_vector = reshape(y_node_int_all', [], 1);

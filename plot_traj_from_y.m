@@ -8,7 +8,7 @@ end
 
 %% ここはまだスケーリングされている、
 x_node     = reshape(y_plot(1:6*(N)),6,N)';% (N)×6の行列
-u_node     = reshape(y_plot(6*(N)+1:6*(N)+4*N),4,N)'/auxdata.coeff_u;% N×4の行列
+u_node     = reshape(y_plot(6*(N)+1:6*(N)+4*N),4,N)';% N×4の行列
 x_node_real(:, 1:3) = x_node(:, 1:3) * lsf; % x, y, z のスケーリングを元に戻す
 x_node_real(:, 4:6) = x_node(:, 4:6) * lsf / tsf; % vx, vy, vz のスケーリングを元に戻す
 % u_node(:, 1:3) = u_node(:, 1:3) * lsf / tsf; % vx, vy, vz のスケーリングを元に戻す
