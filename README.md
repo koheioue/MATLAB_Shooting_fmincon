@@ -20,7 +20,7 @@
 始点（ΔV1）、終点（ΔV3）に加え、中間インパルス（ΔV2）を加えています。それぞれの区間の遷移時間、T1, T2が最適化変数になっています。
 
 ### 最適軌道
-![image](https://github.com/user-attachments/assets/b6610762-3920-412b-b4a1-2239ede5b93d)
+<img src="https://github.com/user-attachments/assets/b6610762-3920-412b-b4a1-2239ede5b93d" width="300" alt="image">
 始点、終点、中間インパルスでΔVを矢印で描画しています。
 中間インパルスが図示されていないように見えますが、最適化の結果、T1≒0、ΔV2≒0になっており、始点と一致しています。
 
