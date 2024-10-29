@@ -18,8 +18,6 @@ x_node_end = [];
 options = auxdata.options;
 
 figure(1)
-axis equal
-grid on
 % 太陽をプロットする（大きさは、半径R_sunを使用）（2次元平面で）
 theta = linspace(0, 2*pi, 100);
 x_sun = auxdata.R_sun_km * cos(theta);
@@ -40,7 +38,7 @@ xx_earth = 1.496e8 * cos(theta);
 yy_earth = 1.496e8 * sin(theta);
 plot(xx_earth, yy_earth, '--', Color=[0.5 0.5 0.5])
 hold on
-plot(x_node_real(1,1), x_node_real(1,2), 'r*', MarkerSize=10, LineWidth=2)
+plot(x_node_real(:,1), x_node_real(:,2), 'r*', MarkerSize=5, LineWidth=2)
 hold on
 
 for node_num = 1 : N-1
@@ -62,9 +60,19 @@ for node_num = 1 : N-1
     hold on
 end
 quiver(x_node_real(N,1), x_node_real(N,2), 1e7*u_node(N,1), 1e7*u_node(N,2), 'LineWidth', 2, 'MaxHeadSize',20, Color=[0 0 0])
-
+axis equal
+grid on
+% x軸とy軸を追加し、kmと表示
+xlabel('x ,km')
+ylabel('y ,km')
 
 %% ΔVの合計  km/s
 delta_v = u_node(:, 1:3);
 delta_v_sum_km_s = sum(vecnorm(delta_v, 2, 2)); 
 disp(['Delta V sum = ', num2str(delta_v_sum_km_s), ' km/s'])
+
+if flag_opt == 0
+    title(['Initial Guess Trajectory (ΔV = ', num2str(delta_v_sum_km_s), ' km/s)'])
+elseif flag_opt == 1
+    title(['Optimized Trajectory (ΔV = ', num2str(delta_v_sum_km_s), ' km/s)'])
+end
