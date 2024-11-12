@@ -1,4 +1,4 @@
-%% 太陽中心のCR3BPの運動方程式
+%% 太陽中心の2BPの運動方程式
 function dydt = x_dot_2bp(t, y, auxdata)
     % auxdataから変数を呼び出す
     mu_sun = auxdata.mu_sun;
