@@ -45,4 +45,4 @@
 
 （ΔVがホーマン遷移軌道の解析解よりも小さいのは、多少の誤差かと思います）
 
-※Qiitaで[解説記事](https://qiita.com/hokkaido/items/ff484304b7678ed2c3b6)書いてみました。
+※Qiitaで[解説記事](https://qiita.com/hokkaido/items/ff484304b7678ed2c3b6)を書いてみました。
